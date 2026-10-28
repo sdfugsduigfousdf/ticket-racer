@@ -1,0 +1,174 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Teko:wght@500;600;700&display=swap");
+
+@theme {
+  --color-bg: #100e0c;
+  --color-surface: #1c1814;
+  --color-raised: #2a231c;
+  --color-fg: #f3ecdf;
+  --color-muted: #a89880;
+  --color-gold: #e2a53a;
+  --color-gold-deep: #8a6420;
+  --color-oxide: #e24b3a;
+  --color-line: #3a3128;
+  --font-display: "Teko", "Arial Narrow", Impact, sans-serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
+  --radius-lg: 0.85rem;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-bg);
+  }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-bg);
+  }
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 0.86;
+  letter-spacing: 0.01em;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+.ticket {
+  position: relative;
+  background:
+    radial-gradient(circle at 0 14px, transparent 10px, var(--color-surface) 11px) left / 18px 28px repeat-y,
+    radial-gradient(circle at 100% 14px, transparent 10px, var(--color-surface) 11px) right / 18px 28px repeat-y,
+    var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 0.4rem;
+}
+
+.foil {
+  background:
+    linear-gradient(
+      115deg,
+      transparent 30%,
+      color-mix(in oklab, var(--color-fg) 70%, var(--color-gold)) 46%,
+      transparent 62%
+    ),
+    linear-gradient(180deg, var(--color-gold-deep), var(--color-gold) 42%, var(--color-gold-deep));
+  background-size: 220% 100%, 100% 100%;
+  animation: sheen 3.2s linear infinite;
+}
+
+.range {
+  accent-color: var(--color-gold);
+  width: 100%;
+  height: 1.75rem;
+}
+
+.speed-lines {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 18px,
+    color-mix(in oklab, var(--color-fg) 18%, transparent) 18px 19px
+  );
+  mask-image: linear-gradient(90deg, transparent, black 30%, transparent 70%);
+  animation: streak 0.45s linear infinite;
+}
+
+@keyframes sheen {
+  from {
+    background-position: 120% 0, 0 0;
+  }
+  to {
+    background-position: -40% 0, 0 0;
+  }
+}
+
+@keyframes streak {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-19px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foil,
+  .speed-lines {
+    animation: none;
+  }
+}
+
+/* Mobile & touch refinements */
+.race-root {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+@media (max-width: 640px) {
+  .display {
+    letter-spacing: 0.005em;
+  }
+
+  .ticket {
+    background:
+      radial-gradient(circle at 0 12px, transparent 8px, var(--color-surface) 9px) left / 14px 24px repeat-y,
+      radial-gradient(circle at 100% 12px, transparent 8px, var(--color-surface) 9px) right / 14px 24px repeat-y,
+      var(--color-surface);
+  }
+
+  /* Larger touch targets for range inputs */
+  .range {
+    height: 2.25rem;
+  }
+
+  input[type="text"],
+  input:not([type]),
+  input[type="search"] {
+    font-size: 16px; /* prevent iOS zoom on focus */
+  }
+}
+
+/* Safe-area aware full-height race */
+@supports (padding: max(0px)) {
+  .race-root {
+    min-height: 100dvh;
+  }
+}
